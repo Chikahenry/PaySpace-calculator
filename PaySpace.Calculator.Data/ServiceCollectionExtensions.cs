@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 
 namespace PaySpace.Calculator.Data
 {
@@ -9,8 +10,8 @@ namespace PaySpace.Calculator.Data
     {
         public static void AddDataServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<CalculatorContext>(opt =>
-                opt.UseSqlite(configuration.GetConnectionString("CalculatorDatabase")));
+            services.AddDbContext<CalculatorContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("CalculatorDatabase")));
         }
 
         public static void InitializeDatabase(this IApplicationBuilder app)
@@ -19,12 +20,8 @@ namespace PaySpace.Calculator.Data
             using var scope = scopeFactory.CreateScope();
 
             var context = scope.ServiceProvider.GetRequiredService<CalculatorContext>();
-
-            var pendingMigrations = context.Database.GetPendingMigrations().ToList();
-            if (pendingMigrations.Any())
-            {
-                context.Database.Migrate();
-            }
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace PaySpace.Calculator.Web.Services.Models
 {
-    public sealed class CalculatorHistory
+    public sealed class CalculatorHistoryDto
     {
         public string PostalCode { get; set; }
 

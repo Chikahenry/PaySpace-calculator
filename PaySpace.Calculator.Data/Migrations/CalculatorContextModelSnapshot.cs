@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaySpace.Calculator.Data;
 
@@ -15,65 +16,73 @@ namespace PaySpace.Calculator.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("PaySpace.Calculator.Data.Models.CalculatorHistory", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<int>("Calculator")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Income")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Tax")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Timestamp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CalculatorHistory");
+                    b.ToTable("CalculatorHistories");
                 });
 
             modelBuilder.Entity("PaySpace.Calculator.Data.Models.CalculatorSetting", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<int>("Calculator")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<decimal>("From")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Rate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("RateType")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
-                    b.Property<decimal?>("To")
-                        .HasColumnType("TEXT");
+                    b.Property<decimal>("To")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CalculatorSetting");
+                    b.ToTable("CalculatorSettings");
 
                     b.HasData(
                         new
                         {
                             Id = 1L,
-                            Calculator = 0,
+                            Calculator = 1,
                             From = 0m,
                             Rate = 10m,
                             RateType = 0,
@@ -82,7 +91,7 @@ namespace PaySpace.Calculator.Data.Migrations
                         new
                         {
                             Id = 2L,
-                            Calculator = 0,
+                            Calculator = 1,
                             From = 8351m,
                             Rate = 15m,
                             RateType = 0,
@@ -91,7 +100,7 @@ namespace PaySpace.Calculator.Data.Migrations
                         new
                         {
                             Id = 3L,
-                            Calculator = 0,
+                            Calculator = 1,
                             From = 33951m,
                             Rate = 25m,
                             RateType = 0,
@@ -100,7 +109,7 @@ namespace PaySpace.Calculator.Data.Migrations
                         new
                         {
                             Id = 4L,
-                            Calculator = 0,
+                            Calculator = 1,
                             From = 82251m,
                             Rate = 28m,
                             RateType = 0,
@@ -109,7 +118,7 @@ namespace PaySpace.Calculator.Data.Migrations
                         new
                         {
                             Id = 5L,
-                            Calculator = 0,
+                            Calculator = 1,
                             From = 171551m,
                             Rate = 33m,
                             RateType = 0,
@@ -118,15 +127,16 @@ namespace PaySpace.Calculator.Data.Migrations
                         new
                         {
                             Id = 6L,
-                            Calculator = 0,
+                            Calculator = 1,
                             From = 372951m,
                             Rate = 35m,
-                            RateType = 0
+                            RateType = 0,
+                            To = 79228162514264337593543950335m
                         },
                         new
                         {
                             Id = 7L,
-                            Calculator = 1,
+                            Calculator = 2,
                             From = 0m,
                             Rate = 5m,
                             RateType = 0,
@@ -135,18 +145,20 @@ namespace PaySpace.Calculator.Data.Migrations
                         new
                         {
                             Id = 8L,
-                            Calculator = 1,
+                            Calculator = 2,
                             From = 200000m,
                             Rate = 10000m,
-                            RateType = 1
+                            RateType = 1,
+                            To = 79228162514264337593543950335m
                         },
                         new
                         {
                             Id = 9L,
-                            Calculator = 2,
+                            Calculator = 3,
                             From = 0m,
                             Rate = 17.5m,
-                            RateType = 0
+                            RateType = 0,
+                            To = 79228162514264337593543950335m
                         });
                 });
 
@@ -154,42 +166,44 @@ namespace PaySpace.Calculator.Data.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<int>("Calculator")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("PostalCode");
+                    b.ToTable("PostalCodes");
 
                     b.HasData(
                         new
                         {
                             Id = 1L,
-                            Calculator = 0,
+                            Calculator = 1,
                             Code = "7441"
                         },
                         new
                         {
                             Id = 2L,
-                            Calculator = 1,
+                            Calculator = 2,
                             Code = "A100"
                         },
                         new
                         {
                             Id = 3L,
-                            Calculator = 2,
+                            Calculator = 3,
                             Code = "7000"
                         },
                         new
                         {
                             Id = 4L,
-                            Calculator = 0,
+                            Calculator = 1,
                             Code = "1000"
                         });
                 });

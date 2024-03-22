@@ -1,0 +1,29 @@
+﻿@page
+@model CalculatorViewModel
+
+<h1>Calculate Tax</h1>
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+
+<div class="">
+    <form method="post">
+        <div class="form-group">
+            <label for="PostalCode">Postal Code:</label>
+            <input type="text" class="form-control" id="PostalCode" name="PostalCode" value="@Model.PostalCode" />
+            <span asp-validation-for="PostalCode" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Income">Income:</label>
+            <input type="number" class="form-control" id="Income" name="Income" value="@Model.Income" />
+            <span asp-validation-for="Income" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Calculate</button>
+    </form>
+
+</div>

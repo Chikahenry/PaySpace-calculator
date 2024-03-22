@@ -2,7 +2,7 @@
 {
     public enum CalculatorType
     {
-        Progressive,
+        Progressive = 1,
         FlatValue,
         FlatRate
     }

@@ -4,8 +4,16 @@ using PaySpace.Calculator.Data.Models;
 
 namespace PaySpace.Calculator.Data
 {
-    public class CalculatorContext(DbContextOptions<CalculatorContext> options) : DbContext(options)
+    public class CalculatorContext : DbContext
     {
+        public CalculatorContext(DbContextOptions<CalculatorContext> options) : base(options)
+        { }
+        
+        public DbSet<CalculatorSetting> CalculatorSettings { get; set; }
+        public DbSet<PostalCode> PostalCodes { get; set; }
+        public DbSet<CalculatorHistory> CalculatorHistories { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PostalCode>()
@@ -35,12 +43,12 @@ namespace PaySpace.Calculator.Data
                 new() { Id = 3, Calculator = CalculatorType.Progressive, RateType = RateType.Percentage, Rate = 25, From = 33951, To = 82250 },
                 new() { Id = 4, Calculator = CalculatorType.Progressive, RateType = RateType.Percentage, Rate = 28, From = 82251, To = 171550 },
                 new() { Id = 5, Calculator = CalculatorType.Progressive, RateType = RateType.Percentage, Rate = 33, From = 171551, To = 372950 },
-                new() { Id = 6, Calculator = CalculatorType.Progressive, RateType = RateType.Percentage, Rate = 35, From = 372951, To = null },
+                new() { Id = 6, Calculator = CalculatorType.Progressive, RateType = RateType.Percentage, Rate = 35, From = 372951, To = decimal.MaxValue },
 
                 new() { Id = 7, Calculator = CalculatorType.FlatValue, RateType = RateType.Percentage, Rate = 5, From = 0, To = 199999 },
-                new() { Id = 8, Calculator = CalculatorType.FlatValue, RateType = RateType.Amount, Rate = 10000, From = 200000, To = null },
+                new() { Id = 8, Calculator = CalculatorType.FlatValue, RateType = RateType.Amount, Rate = 10000, From = 200000, To = decimal.MaxValue },
 
-                new() { Id = 9, Calculator = CalculatorType.FlatRate, RateType = RateType.Percentage, Rate = 17.5M, From = 0, To = null },
+                new() { Id = 9, Calculator = CalculatorType.FlatRate, RateType = RateType.Percentage, Rate = 17.5M, From = 0, To = decimal.MaxValue },
             };
         }
     }

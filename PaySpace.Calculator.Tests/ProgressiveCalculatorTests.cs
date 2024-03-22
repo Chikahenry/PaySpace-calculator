@@ -1,10 +1,13 @@
 ﻿using NUnit.Framework;
+using PaySpace.Calculator.Web.Services;
+using PaySpace.Calculator.Web.Services.Models;
 
 namespace PaySpace.Calculator.Tests
 {
     [TestFixture]
     internal sealed class ProgressiveCalculatorTests
     {
+        private readonly CalculatorHttpService _calculator;
         [SetUp]
         public void Setup()
         {
@@ -20,11 +23,12 @@ namespace PaySpace.Calculator.Tests
         [TestCase(999999, 327681.79)]
         public async Task Calculate_Should_Return_Expected_Tax(decimal income, decimal expectedTax)
         {
-            // Arrange
-
+            var request = new CalculateRequest { Income = income };
             // Act
+            var calculatedTax = await _calculator.CalculateTaxAsync(request);
 
             // Assert
+            Assert.Equals(expectedTax, calculatedTax.Tax);
         }
     }
 }

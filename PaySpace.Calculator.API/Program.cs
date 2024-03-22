@@ -11,8 +11,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddMapster();
 
-builder.Services.AddCalculatorServices();
 builder.Services.AddDataServices(builder.Configuration);
+builder.Services.AddCalculatorServices();
 
 var app = builder.Build();
 
@@ -21,6 +21,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 app.UseRouting();

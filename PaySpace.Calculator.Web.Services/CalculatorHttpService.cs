@@ -1,5 +1,9 @@
 ﻿using System.Net.Http.Json;
-
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using PaySpace.Calculator.Data;
+using PaySpace.Calculator.Data.Models;
 using PaySpace.Calculator.Web.Services.Abstractions;
 using PaySpace.Calculator.Web.Services.Models;
 
@@ -7,25 +11,45 @@ namespace PaySpace.Calculator.Web.Services
 {
     public class CalculatorHttpService : ICalculatorHttpService
     {
-        public async Task<List<PostalCode>> GetPostalCodesAsync()
+        private readonly HttpClient _httpClient;
+        public CalculatorHttpService(IHttpClientFactory httpClient)
         {
-            var response = await httpClient.GetAsync("api/posta1code");
+            _httpClient = httpClient.CreateClient("CalculatorHttpService"); 
+        }
+        public async Task<List<PostalCodeDto>> GetPostalCodesAsync()
+        {
+            var response = await _httpClient.GetAsync("api/calculator/postalcode");
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception($"Cannot fetch postal codes, status code: {response.StatusCode}");
             }
 
-            return await response.Content.ReadFromJsonAsync<List<PostalCode>>() ?? [];
+            var postalCodes = await response.Content.ReadFromJsonAsync<List<PostalCodeDto>>() ?? [];
+            return postalCodes;
         }
 
-        public async Task<List<CalculatorHistory>> GetHistoryAsync()
+        public async Task<List<CalculatorHistoryDto>> GetHistoryAsync()
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("api/Calculator/history");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Cannot fetch history, status code: {response.StatusCode}");
+            }
+
+            var histories = await response.Content.ReadFromJsonAsync<List<CalculatorHistoryDto>>() ?? [];
+            return histories;
         }
 
-        public async Task<CalculateResult> CalculateTaxAsync(CalculateRequest calculationRequest)
+        public async Task<CalculateResultDto> CalculateTaxAsync(CalculateRequest calculationRequest)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync("api/Calculator/calculate-tax");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Cannot Calculate tax now, status code: {response.StatusCode}");
+            }
+
+            var result = await response.Content.ReadFromJsonAsync<CalculateResultDto>();
+            return result;
         }
     }
 }

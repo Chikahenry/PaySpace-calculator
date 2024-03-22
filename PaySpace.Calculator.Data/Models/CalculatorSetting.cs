@@ -15,6 +15,6 @@ namespace PaySpace.Calculator.Data.Models
 
         public decimal From { get; set; }
 
-        public decimal? To { get; set; }
+        public decimal To { get; set; }
     }
 }
